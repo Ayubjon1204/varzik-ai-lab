@@ -789,3 +789,108 @@ h1, h2, h3, h4, h5, h6 {
     color: #000 !important;
   }
 }
+
+/* Custom Dropdown Styles */
+.custom-dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  transition: var(--transition);
+  outline: none;
+}
+
+.custom-dropdown-trigger:hover, .custom-dropdown-trigger.open {
+  background-color: var(--border);
+  color: var(--secondary);
+}
+
+.custom-dropdown-trigger::after {
+  content: '▼';
+  font-size: 0.65rem;
+  transition: transform 0.25s ease;
+  margin-left: 4px;
+}
+
+.custom-dropdown-trigger.open::after {
+  transform: rotate(180deg);
+}
+
+.custom-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  min-width: 220px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  z-index: 150;
+  transform-origin: top right;
+  animation: dropdownFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="dark"] .custom-dropdown-menu {
+  background: rgba(18, 25, 41, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.custom-dropdown-item {
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  width: 100%;
+  white-space: nowrap;
+}
+
+.custom-dropdown-item:hover {
+  background-color: var(--border);
+  color: var(--secondary);
+}
+
+.custom-dropdown-item.active {
+  background-color: var(--success-bg);
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+[data-theme="dark"] .custom-dropdown-item.active {
+  background-color: rgba(16, 185, 129, 0.15);
+}
+

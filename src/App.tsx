@@ -9,6 +9,15 @@ function App() {
   const [currentView, setView] = useState<string>('home');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  // Click outside listener for custom dropdown
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const handleOutsideClick = () => setDropdownOpen(false);
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, [dropdownOpen]);
 
   // Force database state reload and re-render
   const refreshDB = () => {
@@ -104,17 +113,32 @@ function App() {
                 Bosh sahifa
               </button>
               
-              <select 
-                className="nav-link"
-                onChange={(e) => setView(e.target.value)}
-                value={menuItems.some(i => i.id === currentView) ? currentView : 'home'}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', paddingRight: '20px' }}
-              >
-                <option value="home">Bo‘limlar...</option>
-                {menuItems.slice(1).map(item => (
-                  <option key={item.id} value={item.id}>{item.label}</option>
-                ))}
-              </select>
+              <div className="custom-dropdown-container">
+                <button 
+                  className={`custom-dropdown-trigger ${dropdownOpen ? 'open' : ''}`}
+                  onClick={(e) => { e.stopPropagation(); setDropdownOpen(!dropdownOpen); }}
+                >
+                  {menuItems.some(i => i.id === currentView && i.id !== 'home') 
+                    ? menuItems.find(i => i.id === currentView)?.label 
+                    : 'Bo‘limlar...'}
+                </button>
+                {dropdownOpen && (
+                  <div className="custom-dropdown-menu">
+                    {menuItems.slice(1).map(item => (
+                      <button
+                        key={item.id}
+                        className={`custom-dropdown-item ${currentView === item.id ? 'active' : ''}`}
+                        onClick={() => {
+                          setView(item.id);
+                          setDropdownOpen(false);
+                        }}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Theme Toggle */}
